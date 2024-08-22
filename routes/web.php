@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KostController;
+use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/contact', function() {
+    return view('contact.contact');
+})->name('contact');
+
 Route::controller(AuthController::class)->group(function() {
     Route::get('/login', 'login')->name('login');
     Route::get('/register', 'register')->name('register');
@@ -26,6 +32,11 @@ Route::controller(AuthController::class)->group(function() {
 
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home');
+});
+
+Route::controller(ProfilController::class)->group(function() {
+    Route::get('/profil/{id}', 'index')->name('profil');
+    Route::put('/profil-update/{id}', 'update')->name('profil.update');
 });
 
 Route::controller(KostController::class)->group(function() {

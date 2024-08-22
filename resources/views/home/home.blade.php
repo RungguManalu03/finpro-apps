@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{asset('assets/design/css/magnific-popup.css')}}">
     <link rel="stylesheet" href="{{asset('assets/design/css/slicknav.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/design/css/style.css')}}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -41,17 +42,31 @@
         <div class="canvas-close">
             <i class="icon_close"></i>
         </div>
-        <div class="search-icon  search-switch">
-            <i class="icon_search"></i>
+        @if (Auth::check())
+        <div class="nav-right" style="position: relative;">
+            <figure style="--width: 50; --height: 50; border-radius: 50%; margin: 0; cursor: pointer;" onclick="toggleDropdownM()">
+                <img src="{{ asset('assets/' . (Auth::user()->gambar ?? 'images/default.jpg')) }}" width="50" height="50" loading="lazy" alt="The beginners guide to Henna Brows in Brisbane" style="object-fit: cover; border-radius: 50%;">
+            </figure>
+            <div id="profileDropdownM" style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 1000;">
+                <a href="{{ route('profil', ['id' => Auth::user()->id]) }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                    <i class="fas fa-user" style="margin-right: 8px;"></i> Profil
+                </a>
+                <a href="{{ route('logout') }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                    <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+                </a>
+            </div>
         </div>
+        @endif
+        @if (!Auth::check())
         <div class="header-configure-area">
-            <a href="#" class="bk-btn">Booking Now</a>
+            <a href="{{ route('login') }}" class="bk-btn">Login</a>
         </div>
+        @endif
         <nav class="mainmenu mobile-menu">
             <ul>
                 <li class="active"><a href="{{ route('home') }}">Home</a></li>
-                <li><a href="{{ route('kost') }}l">Kost</a></li>
-                <li><a href="./contact.html">Kontak Kami</a></li>
+                <li><a href="{{ route('kost') }}">Kost</a></li>
+                <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -75,7 +90,11 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="tn-right">
-                            <a href="#" class="bk-btn">Cari Sekarang Juga!</a>
+                        @if (Auth::check())
+                            <a href="{{ route('logout') }}" class="bk-btn">Logout</a>
+                        @else
+                            <a href="{{ route('login') }}" class="bk-btn">Login</a>
+                        @endif
                         </div>
                     </div>
                 </div>
@@ -97,12 +116,24 @@
                                 <ul>
                                     <li class="active"><a href="{{ route('home') }}">Home</a></li>
                                     <li><a href="{{ route('kost') }}">Kost</a></li>
-                                    <li><a href="./contact.html">Kontak Kami</a></li>
+                                    <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
                                 </ul>
                             </nav>
-                            <div class="nav-right search-switch">
-                                <i class="icon_search"></i>
+                            @if (Auth::check())
+                            <div class="nav-right" style="position: relative;">
+                                <figure style="--width: 50; --height: 50; border-radius: 50%; margin: 0; cursor: pointer;" onclick="toggleDropdown()">
+                                    <img src="{{ asset('assets/' . (Auth::user()->gambar ?? 'images/default.jpg')) }}" width="50" height="50" loading="lazy" alt="The beginners guide to Henna Brows in Brisbane" style="object-fit: cover; border-radius: 50%;">
+                                </figure>
+                                <div id="profileDropdown" style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 1000;">
+                                    <a href="{{ route('profil', ['id' => Auth::user()->id]) }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                                        <i class="fas fa-user" style="margin-right: 8px;"></i> Profil
+                                    </a>
+                                    <a href="{{ route('logout') }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                                        <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+                                    </a>
+                                </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -124,7 +155,7 @@
                 </div>
             </div>
         </div>
-        <div class="hero-slider owl-carousel">
+        <div class="hero-slider owl-carousel" style="height: 110%;">
             <div class="hs-item set-bg" data-setbg="{{ asset('assets/design/img/hero/kost4.jpg') }}"></div>
             <div class="hs-item set-bg" data-setbg="{{ asset('assets/design/img/hero/kost5.webp') }}"></div>
             <div class="hs-item set-bg" data-setbg="{{ asset('assets/design/img/hero/kost3.jpg') }}"></div>
@@ -239,6 +270,35 @@
     <script src="{{asset('assets/design/js/jquery.slicknav.js')}}"></script>
     <script src="{{asset('assets/design/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('assets/design/js/main.js')}}"></script>
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById('profileDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('figure, figure *')) {
+                var dropdown = document.getElementById('profileDropdown');
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                }
+            }
+        }
+
+        function toggleDropdownM() {
+            var dropdown = document.getElementById('profileDropdownM');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('figure, figure *')) {
+                var dropdown = document.getElementById('profileDropdownM');
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

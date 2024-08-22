@@ -36,9 +36,9 @@
                                     id="password" name="password" placeholder="Password" required />
                                 </div>
                                 <input type="submit" value="Login" class="sign-btn" />
-                                 <div class="text-center mt-3">
-                                    <a href="{{ route('register') }}" class="btn btn-outline-secondary">
-                                        <p class="text-secondary">Register</p>
+                                <div class="text-center mt-3">
+                                    <a href="{{ route('register') }}" style="display: inline-block; padding: 8px 15px; color: #007bff; text-decoration: none; font-size: 14px; border-radius: 4px; transition: all 0.3s ease;">
+                                        Register
                                     </a>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="carousel">
                         <div class="images-wrapper">
-                            <img src="assets/images/kost-page.jpg" class="image img-1 show" alt="" />
+                            <img src="assets/images/register.jpg" class="image img-1 show" alt="" />
                         </div>
                     </div>
                 </div>

@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="{{asset('assets/design/css/slicknav.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/design/css/style.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <style>
     .room-pagination svg {
@@ -113,41 +115,59 @@
         <div class="canvas-close">
             <i class="icon_close"></i>
         </div>
-        <div class="search-icon search-switch">
-            <i class="icon_search"></i>
+        @if (Auth::check())
+        <div class="nav-right" style="position: relative;">
+            <figure style="--width: 50; --height: 50; border-radius: 50%; margin: 0; cursor: pointer;" onclick="toggleDropdownM()">
+                <img src="{{ asset('assets/' . (Auth::user()->gambar ?? 'images/default.jpg')) }}" width="50" height="50" loading="lazy" alt="The beginners guide to Henna Brows in Brisbane" style="object-fit: cover; border-radius: 50%;">
+            </figure>
+            <div id="profileDropdownM" style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 1000;">
+                <a href="{{ route('profil', ['id' => Auth::user()->id]) }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                    <i class="fas fa-user" style="margin-right: 8px;"></i> Profil
+                </a>
+                <a href="{{ route('logout') }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                    <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+                </a>
+            </div>
         </div>
+        @endif
+        @if (!Auth::check())
         <div class="header-configure-area">
-            <a href="#" class="bk-btn">Cari Sekarang Juga!</a>
+            <a href="{{ route('login') }}" class="bk-btn">Login</a>
         </div>
+        @endif
         <nav class="mainmenu mobile-menu">
             <ul>
                 <li class="active"><a href="{{ route('home') }}">Home</a></li>
                 <li><a href="{{ route('kost') }}">Kost</a></li>
-                <li><a href="./contact.html">Kontak Kami</a></li>
+                <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
         <ul class="top-widget">
-            <li><i class="fa fa-phone"></i> 08123456778</li>
-            <li><i class="fa fa-envelope"></i> carikost@gmail.com</li>
+            <li><i class="fa fa-phone"></i>081375126253</li>
+            <li><i class="fa fa-envelope"></i> infokost@gmail.com</li>
         </ul>
     </div>
     <!-- Offcanvas Menu Section End -->
 
     <!-- Header Section Begin -->
-    <header class="header-section header-normal">
+    <header class="header-section">
         <div class="top-nav">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
                         <ul class="tn-left">
-                            <li><i class="fa fa-phone"></i> 08123456778</li>
-                            <li><i class="fa fa-envelope"></i> carikost@gmail.com</li>
+                            <li><i class="fa fa-phone"></i>081375126253</li>
+                            <li><i class="fa fa-envelope"></i> infokost@gmail.com</li>
                         </ul>
                     </div>
                     <div class="col-lg-6">
                         <div class="tn-right">
-                            <a href="#" class="bk-btn">Cari Sekarang Juga!</a>
+                        @if (Auth::check())
+                            <a href="{{ route('logout') }}" class="bk-btn">Logout</a>
+                        @else
+                            <a href="{{ route('login') }}" class="bk-btn">Login</a>
+                        @endif
                         </div>
                     </div>
                 </div>
@@ -159,7 +179,7 @@
                     <div class="col-lg-2">
                         <div class="logo">
                             <a href="./index.html">
-                                <!-- <img src="img/logo.png" alt=""> -->
+                                <img src="{{ asset('assets/design/img/logo.png') }}" alt="">
                             </a>
                         </div>
                     </div>
@@ -167,14 +187,26 @@
                         <div class="nav-menu">
                             <nav class="mainmenu">
                                 <ul>
-                                    <li><a href="{{ route('home') }}">Home</a></li>
-                                    <li class="active"><a href="{{ route('kost') }}">Kost</a></li>
-                                    <li><a href="./contact.html">Kontak Kami</a></li>
+                                    <li class="active"><a href="{{ route('home') }}">Home</a></li>
+                                    <li><a href="{{ route('kost') }}">Kost</a></li>
+                                    <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
                                 </ul>
                             </nav>
-                            <div class="nav-right search-switch">
-                                <i class="icon_search"></i>
+                            @if (Auth::check())
+                            <div class="nav-right" style="position: relative;">
+                                <figure style="--width: 50; --height: 50; border-radius: 50%; margin: 0; cursor: pointer;" onclick="toggleDropdown()">
+                                    <img src="{{ asset('assets/' . (Auth::user()->gambar ?? 'images/default.jpg')) }}" width="50" height="50" loading="lazy" alt="The beginners guide to Henna Brows in Brisbane" style="object-fit: cover; border-radius: 50%;">
+                                </figure>
+                                <div id="profileDropdown" style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 1000;">
+                                    <a href="{{ route('profil', ['id' => Auth::user()->id]) }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                                        <i class="fas fa-user" style="margin-right: 8px;"></i> Profil
+                                    </a>
+                                    <a href="{{ route('logout') }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                                        <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+                                    </a>
+                                </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -358,6 +390,34 @@
                 dropdownParent: $('#detailUserModal')
             });
         });
+
+        function toggleDropdown() {
+            var dropdown = document.getElementById('profileDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('figure, figure *')) {
+                var dropdown = document.getElementById('profileDropdown');
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                }
+            }
+        }
+
+        function toggleDropdownM() {
+            var dropdown = document.getElementById('profileDropdownM');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('figure, figure *')) {
+                var dropdown = document.getElementById('profileDropdownM');
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                }
+            }
+        }
     </script>
 </body>
 
