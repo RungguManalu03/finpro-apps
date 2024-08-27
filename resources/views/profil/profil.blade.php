@@ -15,13 +15,13 @@
     <div class="page-content">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+               <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center" style="min-height: 328px;">
                             <img src="{{ asset('storage/' . ($user->foto_profil ?? 'images/default.jpg')) }}"
-                                 alt="Foto Profil"
-                                 class="rounded-circle img-fluid mb-4 mt-4"
-                                 style="width: 50%; object-fit: cover; border-radius: 50%;">
+                                alt="Foto Profil"
+                                class="rounded-circle img-fluid mb-4 mt-4"
+                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
                             <h5 class="my-2 mb-3">{{ $user->nama_lengkap }}</h5>
                         </div>
                     </div>
@@ -65,14 +65,18 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <input type="file" name="foto_profil" class="form-control">
-                                        @if($user->foto_profil)
+                                        {{-- @if($user->foto_profil)
                                             <small class="text-muted">Foto saat ini: <img src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto Profil" width="50" height="50"></small>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                 </div>
                             </div>
+                             <div class="row">
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-success">Update Profil</button>
+                                </div>
+                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success">Update Profil</button>
                     </form>
                 </div>
             </div>

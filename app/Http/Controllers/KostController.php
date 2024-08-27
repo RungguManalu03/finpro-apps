@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class KostController extends Controller
@@ -44,6 +45,11 @@ class KostController extends Controller
     public function detailKost($id)
     {
         $kost = DB::table('kosts')->where('id', $id)->first();
-        return view('kost.detail-kost', compact('kost'));
+        $transaksis = DB::table('transaksis')
+            ->where('user_id', Auth::user()->id)
+            ->where('kost_id', $id)
+            ->get();
+
+        return view('kost.detail-kost', compact('kost', 'transaksis'));
     }
 }

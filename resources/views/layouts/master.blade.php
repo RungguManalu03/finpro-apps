@@ -33,7 +33,9 @@
             </div>
         </div>
         {{-- @include('layouts.navbar', ['role_id' => Auth::user()->role_id]) --}}
-        @include('layouts.navbar')
+        {{-- @if (Auth::user()->role == 'admin') --}}
+            @include('layouts.navbar')
+        {{-- @endif --}}
         <div class="main-content">
             @yield('content')
 

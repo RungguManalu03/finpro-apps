@@ -64,9 +64,9 @@
         @endif
         <nav class="mainmenu mobile-menu">
             <ul>
-                <li class="active"><a href="{{ route('home') }}">Home</a></li>
+                <li><a href="{{ route('home') }}">Home</a></li>
                 <li><a href="{{ route('kost') }}">Kost</a></li>
-                <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
+                <li class="active"><a href="{{ route('contact') }}">Kontak Kami</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -105,18 +105,18 @@
                 <div class="row">
                     <div class="col-lg-2">
                         <div class="logo">
-                            <a href="./index.html">
-                                <img src="{{ asset('assets/design/img/logo.png') }}" alt="">
-                            </a>
+                              <a href="{{ route('home') }}">
+                                    <img src="{{ asset('assets/logo-kost1.jpg') }}" width="50" alt="">
+                                </a>
                         </div>
                     </div>
                     <div class="col-lg-10">
                         <div class="nav-menu">
                             <nav class="mainmenu">
                                 <ul>
-                                    <li class="active"><a href="{{ route('home') }}">Home</a></li>
+                                    <li><a href="{{ route('home') }}">Home</a></li>
                                     <li><a href="{{ route('kost') }}">Kost</a></li>
-                                    <li><a href="{{ route('contact') }}">Kontak Kami</a></li>
+                                    <li class="active"><a href="{{ route('contact') }}">Kontak Kami</a></li>
                                 </ul>
                             </nav>
                             @if (Auth::check())
@@ -189,18 +189,12 @@
                     <div class="col-lg-4">
                         <div class="ft-about">
                             <div class="logo">
-                                <a href="#">
-                                    <img src=" {{ asset('assets/design/img/footer-logo.png') }} " alt="">
+                                 <a href="{{ route('home') }}">
+                                    <img src="{{ asset('assets/logo-kost1.jpg') }}" width="50" alt="">
                                 </a>
                             </div>
                             <p>Kami bermitra dengan banyak pemilik kost<br />Memudahkan anda mencari kost terbaik untuk anda</p>
-                            <div class="fa-social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-tripadvisor"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            </div>
+
                         </div>
                     </div>
                     <div class="col-lg-3 offset-lg-1">

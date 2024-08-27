@@ -27,6 +27,7 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                @if (Auth::user()->role == 'admin')
                     <li class="nav-item">
                         <a class="nav-link menu-link {{ Request::is('manajemen-user') ? 'active' : '' }}"
                             href="{{ route('manajemen-user') }}" role="button">
@@ -40,15 +41,20 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        {{-- <a class="nav-link menu-link {{ Request::is('manajemen-booking') ? 'active' : '' }}"
+                        <a class="nav-link menu-link {{ Request::is('manajemen-booking') ? 'active' : '' }}"
                             href="{{ route('manajemen-booking') }}" role="button">
-                            <i class="ri-calendar-line"></i> <span data-key="t-dashboards">Manajemen Booking</span>
-                        </a> --}}
-                        <a class="nav-link menu-link"
-                            href="#" role="button">
                             <i class="ri-calendar-line"></i> <span data-key="t-dashboards">Manajemen Booking</span>
                         </a>
                     </li>
+                    @endif
+                @if (Auth::user()->role == 'user')
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Request::is('manajemen-booking') ? 'active' : '' }}"
+                            href="{{ route('manajemen-booking') }}" role="button">
+                            <i class="ri-calendar-line"></i> <span data-key="t-dashboards">History Booking</span>
+                        </a>
+                    </li>
+                @endif
                 </li>
             </ul>
         </div>

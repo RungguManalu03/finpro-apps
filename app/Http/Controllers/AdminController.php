@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Throwable;
@@ -21,6 +22,11 @@ class AdminController extends Controller
     function manajemenKost()
     {
         return view('admin.manajemen-kost');
+    }
+
+    function manajemenBookings()
+    {
+        return view('admin.manajemen-booking');
     }
 
     function findDataUser(Request $request)
@@ -206,6 +212,158 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
+
+    function findDataBooking(Request $request)
+    {
+        try {
+            $query = DB::table('transaksis')
+            ->join('users', 'transaksis.user_id', '=', 'users.id')
+            ->join('kosts', 'transaksis.kost_id', '=', 'kosts.id')
+            ->select(
+                'transaksis.id as id',
+                'transaksis.foto_transaksi',
+                'transaksis.deskripsi',
+                'transaksis.email',
+                'transaksis.no_wa',
+                'transaksis.status',
+                'users.nama_lengkap',
+                'kosts.nama_kost',
+                'kosts.harga',
+                'kosts.lokasi'
+            );
+            if (Auth::user()->role !== 'admin') {
+                $query->where('transaksis.user_id', Auth::user()->id);
+            }
+            if ($request->has('search') && !empty($request->search['value'])) {
+                $searchValue = $request->search['value'];
+                $query->where(function ($subQuery) use ($searchValue) {
+                    $subQuery->where(DB::raw('LOWER(users.nama_lengkap)'), 'LIKE', '%' . strtolower($searchValue) . '%')
+                        ->orWhere(DB::raw('LOWER(transaksis.email)'), 'LIKE', '%' . strtolower($searchValue) . '%')
+                        ->orWhere(DB::raw('LOWER(kosts.nama_kost)'), 'LIKE', '%' . strtolower($searchValue) . '%');
+                });
+            }
+
+            $result = $query->get();
+
+            if ($request->ajax()) {
+                return DataTables::of($result)
+                    ->addIndexColumn()
+                    ->addColumn('nama_lengkap', function ($row) {
+                        return $row->nama_lengkap;
+                    })
+                    ->addColumn('nama_kost', function ($row) {
+                        return $row->nama_kost;
+                    })
+                    ->addColumn('harga', function ($row) {
+                        return $row->harga;
+                    })
+                    ->addColumn('lokasi', function ($row) {
+                        return $row->lokasi;
+                    })
+                    ->addColumn('status', function ($row) {
+                        if ($row->status === 'approved') {
+                            return '<span class="badge bg-success">Approved</span>';
+                        } else {
+                            return '<span class="badge bg-secondary">Request</span>';
+                        }
+                    })
+                    ->addColumn('foto_transaksi', function ($row) {
+                        $fotoTransaksiPath = asset('storage/' . $row->foto_transaksi);
+                        return '<img src="' . $fotoTransaksiPath . '" alt="Foto Transaksi" width="50" height="50" style="border-radius: 50%;" onclick="previewImage(\'' . $fotoTransaksiPath . '\')">';
+                    })
+                    ->addColumn('action', function ($row) {
+                        $whatsappLink = "https://wa.me/{$row->no_wa}";
+                        $gmailLink = "https://mail.google.com/mail/?view=cm&fs=1&to={$row->email}&su=Your%20Subject&body=Your%20Message";
+                        if(Auth::user()->role == 'admin'){
+                            return '
+                            <div class="dropdown d-inline-block">
+                                <button class="btn btn-soft-secondary btn-sm dropdown ps-2 pe-1 py-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center; font-weight: 500; font-size: 14px;">
+                                    Action
+                                    <i class="ri-arrow-drop-down-fill" style="font-size: 20px;"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li class="edit">
+                                        <button id="btn-detail" data-id="' . $row->id . '" class="dropdown-item"><i class="ri-edit-2-fill align-bottom me-2 text-muted"></i>Detail</button>
+                                    </li>
+                                    <li class="whatsapp">
+                                        <a href="' . $whatsappLink . '" target="_blank" class="dropdown-item"><i class="ri-whatsapp-fill align-bottom me-2 text-success"></i>Send WhatsApp</a>
+                                    </li>
+                                    <li class="email">
+                                        <a href="' . $gmailLink . '" target="_blank" class="dropdown-item"><i class="ri-mail-fill align-bottom me-2 text-primary"></i>Send Email</a>
+                                    </li>
+                                </ul>
+                            </div>';
+                        } else {
+                        return '
+                            <div class="dropdown d-inline-block">
+                                <button class="btn btn-soft-secondary btn-sm dropdown ps-2 pe-1 py-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center; font-weight: 500; font-size: 14px;">
+                                    Action
+                                    <i class="ri-arrow-drop-down-fill" style="font-size: 20px;"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li class="edit">
+                                        <button id="btn-detail" data-id="' . $row->id . '" class="dropdown-item"><i class="ri-edit-2-fill align-bottom me-2 text-muted"></i>Detail</button>
+                                    </li>
+                                </ul>
+                            </div>';
+                        }
+                    })
+                    ->rawColumns(['foto_transaksi', 'action', 'status'])
+                    ->make(true);
+            }
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function findDataBookingByID($id)
+    {
+        $transaksi = DB::table('transaksis')
+        ->join('users', 'transaksis.user_id', '=', 'users.id')
+        ->join('kosts', 'transaksis.kost_id', '=', 'kosts.id')
+        ->select(
+            'transaksis.id as id',
+            'transaksis.deskripsi',
+            'transaksis.foto_transaksi',
+            'transaksis.email',
+            'transaksis.no_wa',
+            'transaksis.status',
+            'users.nama_lengkap as user_nama',
+            'kosts.nama_kost',
+            'kosts.harga',
+            'kosts.lokasi',
+            'kosts.services',
+        )
+            ->where('transaksis.id', $id)
+            ->first();
+
+        if ($transaksi) {
+            return response()->json([
+                'success' => true,
+                'data' => $transaksi
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transaksi tidak ditemukan'
+            ]);
+        }
+    }
+
+    public function approve($id)
+   {
+        try {
+            DB::table('transaksis')
+            ->where('id', $id)
+            ->update(['status' => 'approved']);
+            return response()->json(['success' => true, 'message' => 'Berhasil mengupdate user']);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Terjadi Kesalahan pada sisi server']);
+        }
+   }
 
     public function storeKost(Request $request)
     {

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KostController;
+use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,10 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home');
 });
 
+Route::controller(PenggunaController::class)->group(function() {
+    Route::post('store-transaksi', 'store')->name('store-transaksi');
+});
+
 Route::controller(ProfilController::class)->group(function() {
     Route::get('/profil/{id}', 'index')->name('profil');
     Route::put('/profil-update/{id}', 'update')->name('profil.update');
@@ -59,4 +64,10 @@ Route::controller(AdminController::class)->group(function() {
     Route::post('/store-kost', 'storeKost')->name('store-kost');
     Route::post('/edit-kost', 'updateKost')->name('edit-kost');
     Route::delete('/delete-kost/{id}', 'deleteKost')->name('delete-kost');
+
+    //manajemen booking
+    Route::get('manajemen-booking', 'manajemenBookings')->name('manajemen-booking');
+    Route::get('find-data-booking', 'findDataBooking')->name('find-data-booking');
+    Route::get('find-data-booking-id/{id}', 'findDataBookingByID')->name('find-data-booking-id');
+    Route::post('approve/{id}', 'approve')->name('approve');
 });

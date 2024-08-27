@@ -105,9 +105,9 @@
                 <div class="row">
                     <div class="col-lg-2">
                         <div class="logo">
-                            <a href="./index.html">
-                                <img src="{{ asset('assets/design/img/logo.png') }}" alt="">
-                            </a>
+                             <a href="{{ route('home') }}">
+                                    <img src="{{ asset('assets/logo-kost1.jpg') }}" width="50" alt="">
+                                </a>
                         </div>
                     </div>
                     <div class="col-lg-10">
@@ -168,9 +168,13 @@
                         <div class="rd-text">
                             <div class="rd-title">
                                 <h3>{{ $kost->nama_kost }}</h3>
+                                @if (Auth::check())
                                 <div class="rdt-right">
-                                    <a href="#">Kirim Bukti Pembayaran</a>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buktiPembayaranModal">
+                                        Kirim Bukti Pembayaran
+                                    </button>
                                 </div>
+                                @endif
                             </div>
                             <h2 style="font-size: 30px;">Rp.{{ number_format($kost->harga, 0, ',', '.') }}<span>/Bulan</span></h2>
                             <table>
@@ -195,10 +199,75 @@
                             </table>
                             <p class="f-para">{!! $kost->deskripsi !!}</p>
                         </div>
+                       <div class="rd-reviews">
+                            <h4>Pesanan Saya</h4>
+                            @if($transaksis->isEmpty())
+                                <p>Belum ada riwayat pemesanan.</p>
+                            @else
+                            @foreach($transaksis as $transaksi)
+                                <div class="review-item" style="border: 1px solid grey; border-radius: 10px; padding: 20px;">
+                                    <div class="ri-pic">
+                                        <img src="{{ asset('storage/' . $transaksi->foto_transaksi) }}" alt="Foto Transaksi" style="width: 100px; height: 100px;">
+                                    </div>
+                                    <div class="ri-text">
+                                        <span>{{ $transaksi->created_at }}</span>
+                                        <div class="rating">
+                                           <span class="badge bg-dark">{{ $transaksi->status }}</span>
+                                        </div>
+                                        <h5>{{ $transaksi->email }}</h5>
+                                        <p>{{ $transaksi->deskripsi }}</p>
+                                        <p>No. WA: {{ $transaksi->no_wa }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        @if (Auth::check())
+        <div class="modal fade" id="buktiPembayaranModal" tabindex="-1" role="dialog" aria-labelledby="buktiPembayaranLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="{{ route('store-transaksi') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="buktiPembayaranLabel">Kirim Bukti Pembayaran</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                 <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan Email" required="required">
+                            </div>
+                            <div class="form-group">
+                                 <label for="no_wa" class="form-label">Nomor Whatsapp</label>
+                                <input type="number" class="form-control" id="no_wa" name="no_wa" placeholder="Masukkan Whatsapp " required="required">
+                            </div>
+                            <div class="form-group">
+                                <label for="foto_transaksi">Foto Transaksi</label>
+                                <input type="file" class="form-control" id="foto_transaksi" name="foto_transaksi" accept="image/*" onchange="previewImage(event)">
+                                <img id="preview" src="#" alt="Preview" style="display: none; max-width: 100%; margin-top: 10px;">
+                            </div>
+                            <div class="form-group">
+                                <label for="deskripsi">Deskripsi</label>
+                                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+                            </div>
+                            <input type="hidden" name="kost_id" value="{{ $kost->id }}">
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Kirim</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
     </section>
     <!-- Room Details Section End -->
 
@@ -210,18 +279,12 @@
                     <div class="col-lg-4">
                         <div class="ft-about">
                             <div class="logo">
-                                <a href="#">
-                                    <img src=" {{ asset('assets/design/img/footer-logo.png') }} " alt="">
+                                 <a href="{{ route('home') }}">
+                                    <img src="{{ asset('assets/logo-kost1.jpg') }}" width="50" alt="">
                                 </a>
                             </div>
                             <p>Kami bermitra dengan banyak pemilik kost<br />Memudahkan anda mencari kost terbaik untuk anda</p>
-                            <div class="fa-social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-tripadvisor"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            </div>
+
                         </div>
                     </div>
                     <div class="col-lg-3 offset-lg-1">
@@ -307,6 +370,16 @@
                     dropdown.style.display = 'none';
                 }
             }
+        }
+
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
         }
     </script>
 </body>
