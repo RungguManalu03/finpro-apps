@@ -13,91 +13,114 @@
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
     <!-- Css Styles -->
-    <link rel="stylesheet" href="{{asset('assets/design/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/font-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/elegant-icons.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/flaticon.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/owl.carousel.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/nice-select.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/jquery-ui.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/magnific-popup.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/slicknav.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/design/css/style.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/elegant-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/slicknav.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/design/css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
 <style>
+    .wa-floating {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #25D366;
+        color: white;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        font-size: 30px;
+        z-index: 1000;
+    }
+
+    .wa-floating:hover {
+        background-color: #1ebe57;
+    }
+</style>
+<style>
     .room-pagination svg {
-    display: none !important;
-}
+        display: none !important;
+    }
 
-.select2-selection select2-selection--single {
-    display: none !important;
-}
+    .select2-selection select2-selection--single {
+        display: none !important;
+    }
 
-/* Styling container utama form */
-.search-section {
-    /* background-color: #f9f9f9; */
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-}
+    /* Styling container utama form */
+    .search-section {
+        /* background-color: #f9f9f9; */
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
 
-/* Styling untuk row */
-.search-section .row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-/* Styling kolom input */
-.search-section input[type="text"],
-.search-section input[type="number"],
-.search-section select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 14px;
-}
-
-/* Styling tombol submit */
-.search-section .primary-btn {
-    background-color: #ff6f61;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.search-section .primary-btn:hover {
-    background-color: #e65c50;
-}
-
-/* Responsif untuk layar lebih kecil */
-@media (max-width: 768px) {
+    /* Styling untuk row */
     .search-section .row {
-        flex-direction: column;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
-    .search-section .col-lg-3,
-    .search-section .col-lg-4,
-    .search-section .col-lg-2 {
+    /* Styling kolom input */
+    .search-section input[type="text"],
+    .search-section input[type="number"],
+    .search-section select {
         width: 100%;
+        padding: 10px;
         margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 14px;
     }
 
+    /* Styling tombol submit */
     .search-section .primary-btn {
-        width: 100%;
-        text-align: center;
+        background-color: #ff6f61;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
-}
+
+    .search-section .primary-btn:hover {
+        background-color: #e65c50;
+    }
+
+    /* Responsif untuk layar lebih kecil */
+    @media (max-width: 768px) {
+        .search-section .row {
+            flex-direction: column;
+        }
+
+        .search-section .col-lg-3,
+        .search-section .col-lg-4,
+        .search-section .col-lg-2 {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .search-section .primary-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
 </style>
 
 <body>
@@ -116,24 +139,30 @@
             <i class="icon_close"></i>
         </div>
         @if (Auth::check())
-        <div class="nav-right" style="position: relative;">
-            <figure style="--width: 50; --height: 50; border-radius: 50%; margin: 0; cursor: pointer;" onclick="toggleDropdownM()">
-                <img src="{{ asset('assets/' . (Auth::user()->gambar ?? 'images/default.jpg')) }}" width="50" height="50" loading="lazy" alt="The beginners guide to Henna Brows in Brisbane" style="object-fit: cover; border-radius: 50%;">
-            </figure>
-            <div id="profileDropdownM" style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 1000;">
-                <a href="{{ route('profil', ['id' => Auth::user()->id]) }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
-                    <i class="fas fa-user" style="margin-right: 8px;"></i> Profil
-                </a>
-                <a href="{{ route('logout') }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
-                    <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
-                </a>
+            <div class="nav-right" style="position: relative;">
+                <figure style="--width: 50; --height: 50; border-radius: 50%; margin: 0; cursor: pointer;"
+                    onclick="toggleDropdownM()">
+                    <img src="{{ asset('assets/' . (Auth::user()->gambar ?? 'images/default.jpg')) }}" width="50"
+                        height="50" loading="lazy" alt="The beginners guide to Henna Brows in Brisbane"
+                        style="object-fit: cover; border-radius: 50%;">
+                </figure>
+                <div id="profileDropdownM"
+                    style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 1000;">
+                    <a href="{{ route('profil', ['id' => Auth::user()->id]) }}"
+                        style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                        <i class="fas fa-user" style="margin-right: 8px;"></i> Profil
+                    </a>
+                    <a href="{{ route('logout') }}"
+                        style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                        <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+                    </a>
+                </div>
             </div>
-        </div>
         @endif
         @if (!Auth::check())
-        <div class="header-configure-area">
-            <a href="{{ route('login') }}" class="bk-btn">Login</a>
-        </div>
+            <div class="header-configure-area">
+                <a href="{{ route('login') }}" class="bk-btn">Login</a>
+            </div>
         @endif
         <nav class="mainmenu mobile-menu">
             <ul>
@@ -163,11 +192,11 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="tn-right">
-                        @if (Auth::check())
-                            <a href="{{ route('logout') }}" class="bk-btn">Logout</a>
-                        @else
-                            <a href="{{ route('login') }}" class="bk-btn">Login</a>
-                        @endif
+                            @if (Auth::check())
+                                <a href="{{ route('logout') }}" class="bk-btn">Logout</a>
+                            @else
+                                <a href="{{ route('login') }}" class="bk-btn">Login</a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -178,9 +207,9 @@
                 <div class="row">
                     <div class="col-lg-2">
                         <div class="logo">
-                             <a href="{{ route('home') }}">
-                                    <img src="{{ asset('assets/logo-kost1.jpg') }}" width="50" alt="">
-                                </a>
+                            <a href="{{ route('home') }}">
+                                <img src="{{ asset('assets/logo-kost1.jpg') }}" width="50" alt="">
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-10">
@@ -193,19 +222,27 @@
                                 </ul>
                             </nav>
                             @if (Auth::check())
-                            <div class="nav-right" style="position: relative;">
-                                <figure style="--width: 50; --height: 50; border-radius: 50%; margin: 0; cursor: pointer;" onclick="toggleDropdown()">
-                                    <img src="{{ asset('assets/' . (Auth::user()->gambar ?? 'images/default.jpg')) }}" width="50" height="50" loading="lazy" alt="The beginners guide to Henna Brows in Brisbane" style="object-fit: cover; border-radius: 50%;">
-                                </figure>
-                                <div id="profileDropdown" style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 1000;">
-                                    <a href="{{ route('profil', ['id' => Auth::user()->id]) }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
-                                        <i class="fas fa-user" style="margin-right: 8px;"></i> Profil
-                                    </a>
-                                    <a href="{{ route('logout') }}" style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
-                                        <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
-                                    </a>
+                                <div class="nav-right" style="position: relative;">
+                                    <figure
+                                        style="--width: 50; --height: 50; border-radius: 50%; margin: 0; cursor: pointer;"
+                                        onclick="toggleDropdown()">
+                                        <img src="{{ asset('assets/' . (Auth::user()->gambar ?? 'images/default.jpg')) }}"
+                                            width="50" height="50" loading="lazy"
+                                            alt="The beginners guide to Henna Brows in Brisbane"
+                                            style="object-fit: cover; border-radius: 50%;">
+                                    </figure>
+                                    <div id="profileDropdown"
+                                        style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 1000;">
+                                        <a href="{{ route('profil', ['id' => Auth::user()->id]) }}"
+                                            style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                                            <i class="fas fa-user" style="margin-right: 8px;"></i> Profil
+                                        </a>
+                                        <a href="{{ route('logout') }}"
+                                            style="display: flex; align-items: center; padding: 10px; text-decoration: none; color: black;">
+                                            <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                         </div>
                     </div>
@@ -253,43 +290,50 @@
             </div>
         </form>
     </div>
-
+    <a href="https://wa.me/6281375126253" target="_blank" class="wa-floating">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <!-- Rooms Section Begin -->
     <section class="rooms-section spad">
         <div class="container">
             <div class="row">
                 @foreach ($data as $kost)
-                <div class="col-lg-4 col-md-6">
-                    <div class="room-item">
-                        <img src="{{ asset('storage/' . $kost->foto_kost) }}" alt="{{ $kost->nama_kost }}">
-                        <div class="ri-text">
-                            <h4>{{ $kost->nama_kost }}</h4>
-                            <h3 style="font-size: 20px;">Rp.{{ number_format($kost->harga, 0, ',', '.') }}<span>/Bulan</span></h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="r-o">Lokasi:</td>
-                                        <td>{{ $kost->lokasi }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Pemilik:</td>
-                                        <td>{{ $kost->pemilik }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Kontak:</td>
-                                        <td>{{ $kost->kontak_wa }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Services:</td>
-                                        <td>{{ $kost->services }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a href="{{ route('detail-kost', ['id' => $kost->id]) }}" class="primary-btn">Lihat Detail</a>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="room-item">
+                            {{-- <img src="{{ asset('storage/' . $kost->foto_kost) }}" alt="{{ $kost->nama_kost }}"> --}}
+                            <img src="{{ asset('storage/' . $kost->foto_kost) }}" alt="{{ $kost->nama_kost }}"
+                                style="width: 200px; height: 200px; object-fit: cover;">
+
+                            <div class="ri-text">
+                                <h4>{{ $kost->nama_kost }}</h4>
+                                <h3 style="font-size: 20px;">
+                                    Rp.{{ number_format($kost->harga, 0, ',', '.') }}<span>/Bulan</span></h3>
+                                <table>
+                                    <tbody>
+                                        {{-- <tr>
+                                            <td class="r-o">Lokasi:</td>
+                                            <td>{{ $kost->lokasi }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="r-o">Pemilik:</td>
+                                            <td>{{ $kost->pemilik }}</td>
+                                        </tr> --}}
+                                        {{-- <tr>
+                                            <td class="r-o">Kontak:</td>
+                                            <td>{{ $kost->kontak_wa }}</td>
+                                        </tr> --}}
+                                        <tr>
+                                            <td class="r-o">Services:</td>
+                                            <td>{{ $kost->services }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <a href="{{ route('detail-kost', ['id' => $kost->id]) }}" class="primary-btn">Lihat
+                                    Detail</a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endforeach
                 <div class="col-lg-12">
                     <div class="room-pagination">
@@ -310,11 +354,12 @@
                     <div class="col-lg-4">
                         <div class="ft-about">
                             <div class="logo">
-                                 <a href="{{ route('home') }}">
+                                <a href="{{ route('home') }}">
                                     <img src="{{ asset('assets/logo-kost1.jpg') }}" width="50" alt="">
                                 </a>
                             </div>
-                            <p>Kami bermitra dengan banyak pemilik kost<br />Memudahkan anda mencari kost terbaik untuk anda</p>
+                            <p>Kami bermitra dengan banyak pemilik kost<br />Memudahkan anda mencari kost terbaik untuk
+                                anda</p>
 
                         </div>
                     </div>
@@ -322,9 +367,9 @@
                         <div class="ft-contact">
                             <h6>Kontak Kami</h6>
                             <ul>
-                                <li081375126253</li>
-                                <li>infokost@gmail.com</li>
-                                <li>0867625362</li>
+                                <li081375126253< /li>
+                                    <li>infokost@gmail.com</li>
+                                    <li>0867625362</li>
                             </ul>
                         </div>
                     </div>
@@ -346,7 +391,13 @@
                         </ul>
                     </div>
                     <div class="col-lg-5">
-                        <div class="co-text"><p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Info Kost</p></div>
+                        <div class="co-text">
+                            <p>Copyright &copy;
+                                <script>
+                                    document.write(new Date().getFullYear());
+                                </script> Info Kost
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -366,14 +417,14 @@
     <!-- Search model end -->
 
     <!-- Js Plugins -->
-    <script src="{{asset('assets/design/js/jquery-3.3.1.min.js')}}"></script>
-    <script src="{{asset('assets/design/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/design/js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('assets/design/js/jquery.nice-select.min.js')}}"></script>
-    <script src="{{asset('assets/design/js/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('assets/design/js/jquery.slicknav.js')}}"></script>
-    <script src="{{asset('assets/design/js/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('assets/design/js/main.js')}}"></script>
+    <script src="{{ asset('assets/design/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('assets/design/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/design/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('assets/design/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('assets/design/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('assets/design/js/jquery.slicknav.js') }}"></script>
+    <script src="{{ asset('assets/design/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('assets/design/js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {

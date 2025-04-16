@@ -13,11 +13,13 @@ use Throwable;
 
 class AuthController extends Controller
 {
-    public function login() {
+    public function login()
+    {
         return view('auth.login');
     }
 
-    public function register() {
+    public function register()
+    {
         return view('auth.register');
     }
 
@@ -59,7 +61,7 @@ class AuthController extends Controller
                 'error' => false,
                 'data' => [],
                 'message' => 'Berhasil menambahkan user',
-                'redirectUrl' => '/login',
+                // 'redirectUrl' => '/login',
             ]);
         } catch (Throwable $e) {
             Log::error($e->getMessage());

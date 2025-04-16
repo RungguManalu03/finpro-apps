@@ -46,7 +46,7 @@ class KostController extends Controller
     {
         $kost = DB::table('kosts')->where('id', $id)->first();
         $transaksis = DB::table('transaksis')
-            ->where('user_id', Auth::user()->id)
+            // ->where('user_id', Auth::user()->id)
             ->where('kost_id', $id)
             ->get();
 

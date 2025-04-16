@@ -1,4 +1,3 @@
-
 <div class="app-menu navbar-menu">
     <div class="navbar-brand-box">
         <a href="index-2.html" class="logo logo-dark">
@@ -40,18 +39,18 @@
                             <i class="ri-home-line"></i> <span data-key="t-dashboards">Manajemen Kost</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link menu-link {{ Request::is('manajemen-booking') ? 'active' : '' }}"
                             href="{{ route('manajemen-booking') }}" role="button">
                             <i class="ri-calendar-line"></i> <span data-key="t-dashboards">Manajemen Booking</span>
                         </a>
-                    </li>
-                    @endif
+                    </li> --}}
+                @endif
                 @if (Auth::user()->role == 'user')
                     <li class="nav-item">
                         <a class="nav-link menu-link {{ Request::is('manajemen-booking') ? 'active' : '' }}"
                             href="{{ route('manajemen-booking') }}" role="button">
-                            <i class="ri-calendar-line"></i> <span data-key="t-dashboards">History Booking</span>
+                            <i class="ri-calendar-line"></i> <span data-key="t-dashboards">History Pembayaran</span>
                         </a>
                     </li>
                 @endif

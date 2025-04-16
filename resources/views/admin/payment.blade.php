@@ -25,11 +25,12 @@
                         <div class="card overflow-hidden">
                             <div class="card-header">
                                 <button type="button" class="btn btn-primary float-end fs-11" data-bs-toggle="modal"
-                                    data-bs-target="#addUserModal"><i class="ri-add-line"></i> Tambah Data Kost</button>
-                                <h5 class="card-title mt-2">List Kost</h5>
+                                    data-bs-target="#addUserModal"><i class="ri-add-line"></i> Tambah Data
+                                    Pembayaran</button>
+                                <h5 class="card-title mt-2">List Pembayaran Saya</h5>
                             </div>
                             <div class="card-header bg-transparent pd-b-0 pd-t-20 bd-b-0">
-                                <h4 class="card-title mg-b-10">Halaman Manajemen Kost</h4>
+                                <h4 class="card-title mg-b-10">Halaman Manajemen Pembayaran Kost {{ $namaKost }}</h4>
                                 <div class="d-flex justify-content-between">
                                     <div class="card-body table-responsive">
                                         <table id="user-list"
@@ -38,12 +39,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>NO</th>
-                                                    <th>Unit</th>
-                                                    {{-- <th>Lokasi</th>
-                                                    <th>Pemilik</th> --}}
-                                                    <th>Services</th>
-                                                    <th>Foto Kamar</th>
+                                                    <th>Bulan</th>
+                                                    <th>Tahun</th>
                                                     <th>Status</th>
+                                                    <th>Bukti Pembayaran</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -67,7 +66,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Tambah Kost</h5>
+                    <h5 class="modal-title" id="addUserModalLabel">Tambah Pembayaran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -76,66 +75,22 @@
                         <div class="row g-3">
                             <div class="col-lg-6 col-md-12">
                                 <div>
-                                    <label for="nama_kost" class="form-label">Unit kost</label>
-                                    <input type="text" class="form-control" id="nama_kost" name="nama_kost"
-                                        placeholder="Masukkan Nama kost" required="required">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="services" class="form-label">Services</label>
-                                    <select class="form-select js-example-basic-multiple" name="services[]" id="services"
-                                        multiple="multiple" required>
-                                        <option value="Wifi">Wifi</option>
-                                        <option value="Listrik">Listrik</option>
-                                        <option value="Kamar Mandi Dalam">Kamar Mandi Dalam</option>
+                                    <label for="bulan" class="form-label">Bulan</label>
+                                    <select class="form-control" id="bulan" name="bulan" required="required">
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <div>
-                                    <label for="harga" class="form-label">Harga</label>
-                                    <input type="number" class="form-control" id="harga" name="harga"
-                                        placeholder="Masukkan Harga" required="required">
+                                    <label for="tahun" class="form-label">Tahun</label>
+                                    <select class="form-control" id="tahun" name="tahun" required="required">
+                                    </select>
                                 </div>
                             </div>
-                            {{-- <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="pemilik" class="form-label">Pemilik</label>
-                                    <input type="text" class="form-control" id="pemilik" name="pemilik"
-                                        placeholder="Masukkan Pemilik" required="required">
-                                </div>
-                            </div> --}}
                             <div class="col-lg-6 col-md-12">
-                                <label for="formFileSm" class="form-label">Foto Kost</label>
+                                <label for="formFileSm" class="form-label">Bukti Pembayaran</label>
                                 <input class="form-control form-control-sm" id="gambar" name="gambar" type="file"
                                     required>
-                            </div>
-                            {{-- <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="kontak_email" class="form-label">Email Pemilik</label>
-                                    <input type="text" class="form-control" id="kontak_email" name="kontak_email"
-                                        placeholder="Masukkan Email" required="required">
-                                </div>
-                            </div> --}}
-                            {{-- <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="lokasi" class="form-label">Lokasi</label>
-                                    <textarea class="form-control" id="lokasi" name="lokasi" placeholder="Masukkan Lokasi" required></textarea>
-                                </div>
-                            </div> --}}
-                            {{-- <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="kontak_wa" class="form-label">Nomor WhatsApp Pemilik</label>
-                                    <input type="text" class="form-control" id="kontak_wa" name="kontak_wa"
-                                        placeholder="Masukkan Nomor WA" required="required">
-                                </div>
-                            </div> --}}
-                            <div class="col-12">
-                                <div>
-                                    <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" placeholder="Masukkan Deskripsi"></textarea>
-                                </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="hstack gap-2 justify-content-end">
@@ -164,74 +119,24 @@
                         <div class="row g-3">
                             <div class="col-lg-6 col-md-12">
                                 <div>
-                                    <label for="nama_kost_detail" class="form-label">Unit</label>
-                                    <input type="text" class="form-control" id="nama_kost_detail"
-                                        name="nama_kost_detail" placeholder="Masukkan Nama kost" required="required">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="services_detail" class="form-label">Services</label>
-                                    <select class="form-select js-example-basic-multiple" name="services_detail[]"
-                                        id="services_detail" multiple="multiple" required>
-                                        <option value="Wifi">Wifi</option>
-                                        <option value="Listrik">Listrik</option>
-                                        <option value="Kamar Mandi Dalam">Kamar Mandi Dalam</option>
+                                    <label for="bulan_detail" class="form-label">Bulan</label>
+                                    <select class="form-control" id="bulan_detail" name="bulan_detail"
+                                        required="required">
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <div>
-                                    <label for="harga_detail" class="form-label">Harga</label>
-                                    <input type="number" class="form-control" id="harga_detail" name="harga_detail"
-                                        placeholder="Masukkan Harga" required="required">
+                                    <label for="tahun_detail" class="form-label">Tahun</label>
+                                    <select class="form-control" id="tahun_detail" name="tahun_detail"
+                                        required="required">
+                                    </select>
                                 </div>
                             </div>
-                            {{-- <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="pemilik_detail" class="form-label">Pemilik</label>
-                                    <input type="text" class="form-control" id="pemilik_detail" name="pemilik_detail"
-                                        placeholder="Masukkan Pemilik" required="required">
-                                </div>
-                            </div> --}}
                             <div class="col-lg-6 col-md-12">
-                                <label for="formFileSm" class="form-label">Foto Kost</label>
+                                <label for="formFileSm" class="form-label">Bukti Pembayaran</label>
                                 <input class="form-control form-control-sm" id="gambar_detail" name="gambar_detail"
-                                    type="file">
-                            </div>
-                            {{-- <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="kontak_email_detail" class="form-label">Email Pemilik</label>
-                                    <input type="text" class="form-control" id="kontak_email_detail"
-                                        name="kontak_email_detail" placeholder="Masukkan Email" required="required">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="lokasi_detail" class="form-label">Lokasi</label>
-                                    <textarea class="form-control" id="lokasi_detail" name="lokasi_detail" placeholder="Masukkan Lokasi"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-12">
-                                <div>
-                                    <label for="kontak_wa_detail" class="form-label">Nomor WhatsApp Pemilik</label>
-                                    <input type="text" class="form-control" id="kontak_wa_detail"
-                                        name="kontak_wa_detail" placeholder="Masukkan Nomor WA" required="required">
-                                </div>
-                            </div> --}}
-                            <div class="col-lg-6 col-md-12 mb-3">
-                                <label for="user_id" class="form-label">Pilih User:</label>
-                                <select id="user_id" name="user_id" class="form-select">
-                                    <option value="">-- Pilih User --</option>
-                                    <option value="hapus">Hapus Data</option>
-                                </select>
-                            </div>
-
-                            <div class="col-12">
-                                <div>
-                                    <label for="deskripsi_detail" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi_detail" name="deskripsi_detail" placeholder="Masukkan Deskripsi"></textarea>
-                                </div>
+                                    type="file" required>
                             </div>
                             <input type="text" class="form-control" style="display: none" id="id_detail"
                                 name="id_detail" required="required">
@@ -256,8 +161,179 @@
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        function showImageModal(imageUrl) {
+            Swal.fire({
+                imageUrl: imageUrl,
+                imageAlt: "Bukti Pembayaran",
+                showCloseButton: true,
+                showConfirmButton: false,
+                width: 'auto'
+            });
+        }
+    </script>
+
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let bulanSelect = document.getElementById("bulan");
+            let tahunSelect = document.getElementById("tahun");
+
+            // Buat opsi bulan dari 01 - 12
+            for (let i = 1; i <= 12; i++) {
+                let bulanValue = i.toString().padStart(2, '0'); // Format 01, 02, ..., 12
+                let option = new Option(bulanValue, bulanValue);
+                bulanSelect.add(option);
+            }
+
+            // Buat opsi tahun dari 2025 - 2027
+            for (let tahun = 2025; tahun <= 2027; tahun++) {
+                let option = new Option(tahun, tahun);
+                tahunSelect.add(option);
+            }
+
+            // Set default bulan dan tahun saat ini
+            let today = new Date();
+            let currentMonth = (today.getMonth() + 1).toString().padStart(2, '0'); // Bulan dimulai dari 0 di JS
+            let currentYear = today.getFullYear();
+
+            // Pilih default bulan dan tahun jika masuk dalam rentang 2025-2027
+            if (currentYear >= 2025 && currentYear <= 2027) {
+                tahunSelect.value = currentYear;
+            } else {
+                tahunSelect.value = 2025; // Jika di luar rentang, set default ke 2025
+            }
+            bulanSelect.value = currentMonth;
+        });
+    </script> --}}
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let bulanSelect = document.getElementById("bulan");
+            let tahunSelect = document.getElementById("tahun");
+
+            // Array nama bulan
+            let namaBulan = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+
+            // Buat opsi bulan dari 01 - 12 dengan nama bulan
+            for (let i = 0; i < 12; i++) {
+                let bulanValue = (i + 1).toString().padStart(2, '0'); // Format 01, 02, ..., 12
+                let option = new Option(namaBulan[i], bulanValue); // Nama bulan ditampilkan, value tetap angka
+                bulanSelect.add(option);
+            }
+
+            // Buat opsi tahun dari 2025 - 2027
+            for (let tahun = 2025; tahun <= 2027; tahun++) {
+                let option = new Option(tahun, tahun);
+                tahunSelect.add(option);
+            }
+
+            // Set default bulan dan tahun saat ini
+            let today = new Date();
+            let currentMonth = (today.getMonth() + 1).toString().padStart(2, '0'); // Bulan dimulai dari 0 di JS
+            let currentYear = today.getFullYear();
+
+            // Pilih default bulan dan tahun jika masuk dalam rentang 2025-2027
+            if (currentYear >= 2025 && currentYear <= 2027) {
+                tahunSelect.value = currentYear;
+            } else {
+                tahunSelect.value = 2025; // Jika di luar rentang, set default ke 2025
+            }
+            bulanSelect.value = currentMonth;
+        });
+    </script>
+
+
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let bulanDetailSelect = document.getElementById("bulan_detail");
+            let tahunDetailSelect = document.getElementById("tahun_detail");
+
+            // Buat opsi bulan dari 01 - 12
+            for (let i = 1; i <= 12; i++) {
+                let bulanValue = i.toString().padStart(2, '0'); // Format 01, 02, ..., 12
+                let option = new Option(bulanValue, bulanValue);
+                bulanDetailSelect.add(option);
+            }
+
+            // Buat opsi tahun dari 2025 - 2027
+            for (let tahun = 2025; tahun <= 2027; tahun++) {
+                let option = new Option(tahun, tahun);
+                tahunDetailSelect.add(option);
+            }
+
+            // Set default bulan dan tahun saat ini
+            let today = new Date();
+            let currentMonth = (today.getMonth() + 1).toString().padStart(2, '0'); // Bulan dimulai dari 0 di JS
+            let currentYear = today.getFullYear();
+
+            // Pilih default bulan dan tahun jika masuk dalam rentang 2025-2027
+            if (currentYear >= 2025 && currentYear <= 2027) {
+                tahunDetailSelect.value = currentYear;
+            } else {
+                tahunDetailSelect.value = 2025; // Jika di luar rentang, set default ke 2025
+            }
+            bulanDetailSelect.value = currentMonth;
+        });
+    </script> --}}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let bulanDetailSelect = document.getElementById("bulan_detail");
+            let tahunDetailSelect = document.getElementById("tahun_detail");
+
+            // Array nama bulan
+            let namaBulan = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+
+            // Buat opsi bulan dari 01 - 12 dengan nama bulan
+            for (let i = 0; i < 12; i++) {
+                let bulanValue = (i + 1).toString().padStart(2, '0'); // Format 01, 02, ..., 12
+                let option = new Option(namaBulan[i], bulanValue); // Nama bulan ditampilkan, value tetap angka
+                bulanDetailSelect.add(option);
+            }
+
+            // Buat opsi tahun dari 2025 - 2027
+            for (let tahun = 2025; tahun <= 2027; tahun++) {
+                let option = new Option(tahun, tahun);
+                tahunDetailSelect.add(option);
+            }
+
+            // Set default bulan dan tahun saat ini
+            let today = new Date();
+            let currentMonth = (today.getMonth() + 1).toString().padStart(2, '0'); // Bulan dimulai dari 0 di JS
+            let currentYear = today.getFullYear();
+
+            // Pilih default bulan dan tahun jika masuk dalam rentang 2025-2027
+            if (currentYear >= 2025 && currentYear <= 2027) {
+                tahunDetailSelect.value = currentYear;
+            } else {
+                tahunDetailSelect.value = 2025; // Jika di luar rentang, set default ke 2025
+            }
+            bulanDetailSelect.value = currentMonth;
+        });
+    </script>
+
+
+
+    <script>
+        function formatMonth(monthNumber) {
+            // Convert to number in case it's a string
+            monthNumber = parseInt(monthNumber);
+
+            // Add leading zero for months 1-9
+            if (monthNumber >= 1 && monthNumber <= 9) {
+                return "0" + monthNumber;
+            }
+            // Return as is for months 10-12
+            else {
+                return monthNumber.toString();
+            }
+        }
         let editor, editor_detail;
         ClassicEditor
             .create(document.querySelector('#deskripsi'))
@@ -286,37 +362,43 @@
         let user_datatable = $("#user-list").DataTable({
             processing: true,
             serverSide: true,
-            ajax: `{{ route('find-data-kost') }}`,
+            ajax: `{{ route('find-data-payment') }}`,
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'bulan',
+                    name: 'bulan',
                     searchable: true
-                },
+                }, // ✅ Bisa cari berdasarkan nama bulan
                 {
-                    data: 'nama_kost',
-                    name: 'nama_kost'
-                },
-
-                {
-                    data: 'services',
-                    name: 'services',
-                },
-                {
-                    data: 'gambar',
-                    name: 'gambar',
-                    orderable: false,
+                    data: 'tahun',
+                    name: 'tahun',
                     searchable: true
                 },
                 {
                     data: 'status',
                     name: 'status',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return data; // ✅ Render badge HTML
+                    }
+                },
+                {
+                    data: 'gambar',
+                    name: 'gambar',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'action',
                     name: 'action',
                     orderable: false,
-                    searchable: true
+                    searchable: false
                 }
             ],
         });
@@ -326,7 +408,7 @@
             let id = $(this).data("id");
 
             $.ajax({
-                url: "{{ route('find-data-kost-id') }}",
+                url: "{{ route('find-data-payment-id') }}",
                 data: {
                     "id": id,
                     "_token": "{{ csrf_token() }}",
@@ -336,45 +418,8 @@
                 success: function(data) {
 
                     $("#id_detail").val(data[0]);
-                    $("#nama_kost_detail").val(data[1]);
-                    $("#harga_detail").val(data[2]);
-                    $("#lokasi_detail").val(data[3]);
-                    $("#pemilik_detail").val(data[4]);
-                    $("#services_detail").val(data[5].split(',')).trigger('change');
-                    $("#kontak_wa_detail").val(data[6]);
-                    $("#kontak_email_detail").val(data[7]);
-                    editor_detail.setData(data[8]);
-                    $("#user_id").val(data[9]);
-
-                    // Tambahkan delay sebelum mengambil user list
-                    setTimeout(() => {
-                        let userId = data[9]; // Ambil user ID yang sedang diedit
-                        $.ajax({
-                            url: "{{ url('/get-users') }}",
-                            type: "GET",
-                            data: {
-                                id: userId
-                            }, // Kirim ID user sebagai parameter
-                            dataType: "json",
-                            success: function(data) {
-                                var select = $("#user_id");
-                                select
-                                    .empty(); // Kosongkan dropdown sebelum mengisi ulang
-                                select.append(`
-            <option value="">-- Pilih User --</option>
-            <option value="hapus">Hapus Data</option>
-        `);
-                                $.each(data, function(index, user) {
-                                    select.append(
-                                        `<option value="${user.id}" ${user.id == userId ? "selected" : ""}>${user.nama_lengkap}</option>`
-                                    );
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                console.log("Terjadi kesalahan: " + error);
-                            }
-                        });
-                    }, 200); // Delay 200ms
+                    $("#bulan_detail").val(formatMonth(data[1]));
+                    $("#tahun_detail").val(data[2]);
                 }
             });
         });
@@ -384,10 +429,6 @@
             e.preventDefault();
 
             let form = this;
-
-            if (editor) {
-                form.querySelector('#deskripsi').value = editor.getData();
-            }
 
             if (!form.checkValidity()) {
                 form.reportValidity();
@@ -407,7 +448,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: `{{ route('store-kost') }}`,
+                url: `{{ route('store-payment') }}`,
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -443,11 +484,6 @@
             e.preventDefault();
 
             let form = this;
-
-            if (editor_detail) {
-                form.querySelector('#deskripsi_detail').value = editor_detail.getData();
-            }
-
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
@@ -466,7 +502,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: `{{ route('edit-kost') }}`,
+                url: `{{ route('edit-payment') }}`,
                 data: formData,
                 processData: false,
                 contentType: false,

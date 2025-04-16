@@ -20,7 +20,7 @@
                             {{ csrf_field() }}
                             <center>
                                 <div class="logo">
-                                    <img src="{{ asset('assets/logo-kost.jpg') }}"  style="width: 300px" />
+                                    <img src="{{ asset('assets/logo-kost.jpg') }}" style="width: 300px" />
                                     <h4>Info Kost Apps </h4>
                                 </div>
                                 <div class="heading">
@@ -29,18 +29,19 @@
                             </center>
                             <div class="actual-form">
                                 <div class="input-wrap">
-                                    <input type="text" class="input-field" autocomplete="off" id="email" name="email"  placeholder="Email" required/>
+                                    <input type="text" class="input-field" autocomplete="off" id="email"
+                                        name="email" placeholder="Email" required />
                                 </div>
                                 <div class="input-wrap">
-                                    <input type="password" class="input-field" autocomplete="off"
-                                    id="password" name="password" placeholder="Password" required />
+                                    <input type="password" class="input-field" autocomplete="off" id="password"
+                                        name="password" placeholder="Password" required />
                                 </div>
                                 <input type="submit" value="Login" class="sign-btn" />
-                                <div class="text-center mt-3">
+                                {{-- <div class="text-center mt-3">
                                     <a href="{{ route('register') }}" style="display: inline-block; padding: 8px 15px; color: #007bff; text-decoration: none; font-size: 14px; border-radius: 4px; transition: all 0.3s ease;">
                                         Register
                                     </a>
-                                </div>
+                                </div> --}}
                             </div>
                         </form>
                     </div>
@@ -52,7 +53,8 @@
                 </div>
             </div>
         </main>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             $("#form-login").on('submit', function(e) {
@@ -137,4 +139,5 @@
             })
         </script>
     </body>
+
     </html>

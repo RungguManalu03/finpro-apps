@@ -26,14 +26,18 @@ class AdminController extends Controller
 
     function manajemenBookings()
     {
-        return view('admin.manajemen-booking');
+        $userId = Auth::id();
+        $namaKost = DB::table('kosts')
+            ->where('user_id', $userId)
+            ->value('nama_kost');
+        return view('admin.payment', compact('namaKost'));
     }
 
     function findDataUser(Request $request)
     {
         try {
             $subQuery = DB::table('users')->select('id', 'nama_lengkap', 'email', 'no_telepon', 'foto_profil')
-            ->where('role', 'user');
+                ->where('role', 'user');
 
             if ($request->has('search') && !empty($request->search['value'])) {
                 $searchUser = $request->search['value'];
@@ -45,7 +49,7 @@ class AdminController extends Controller
             }
 
             $queryUser = DB::table(DB::raw("({$subQuery->toSql()}) as tmp"))
-            ->mergeBindings($subQuery)
+                ->mergeBindings($subQuery)
                 ->select('*')
                 ->get();
 
@@ -65,9 +69,9 @@ class AdminController extends Controller
                         $fotoProfilPath = $row->foto_profil ? asset('storage/' . $row->foto_profil) : asset('storage/images/default.jpg');
                         return '<img src="' . $fotoProfilPath . '" alt="Foto Profil" width="50" height="50" style="border-radius: 50%;">';
                     })
-                     // <li class="detail">
-                                //     <a href="' . route('profile', $row->id) . '" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i>Detail</a>
-                                // </li>
+                    // <li class="detail">
+                    //     <a href="' . route('profile', $row->id) . '" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i>Detail</a>
+                    // </li>
                     ->addColumn('action', function ($row) {
                         $html_code =
                             '<div class="dropdown d-inline-block">
@@ -98,8 +102,8 @@ class AdminController extends Controller
     {
         try {
             $data = DB::table('users')
-            ->select('users.id', 'users.nama_lengkap', 'users.email', 'users.no_telepon',)
-            ->where('users.id', $request->id)
+                ->select('users.id', 'users.nama_lengkap', 'users.email', 'users.no_telepon',)
+                ->where('users.id', $request->id)
                 ->first();
             if ($data) {
                 return response()->json([
@@ -121,20 +125,20 @@ class AdminController extends Controller
     function findDataKost(Request $request)
     {
         try {
-            $subQuery = DB::table('kosts')->select('id', 'nama_kost', 'lokasi', 'pemilik', 'services', 'foto_kost');
+            $subQuery = DB::table('kosts')->select('id', 'nama_kost', 'lokasi', 'pemilik', 'services', 'foto_kost', 'status', 'user_id');
 
             if ($request->has('search') && !empty($request->search['value'])) {
                 $searchUser = $request->search['value'];
                 $subQuery->where(function ($a) use ($searchUser) {
                     $a
-                        ->where(DB::raw('LOWER(nama_kost)'), 'LIKE', '%' . strtolower($searchUser) . '%')
-                        ->orWhere(DB::raw('LOWER(lokasi)'), 'LIKE', '%' . strtolower($searchUser) . '%')
-                        ->orWhere(DB::raw('LOWER(pemilik)'), 'LIKE', '%' . strtolower($searchUser) . '%');
+                        ->where(DB::raw('LOWER(nama_kost)'), 'LIKE', '%' . strtolower($searchUser) . '%');
+                    // ->orWhere(DB::raw('LOWER(lokasi)'), 'LIKE', '%' . strtolower($searchUser) . '%')
+                    // ->orWhere(DB::raw('LOWER(pemilik)'), 'LIKE', '%' . strtolower($searchUser) . '%');
                 });
             }
 
             $queryUser = DB::table(DB::raw("({$subQuery->toSql()}) as tmp"))
-            ->mergeBindings($subQuery)
+                ->mergeBindings($subQuery)
                 ->select('*')
                 ->get();
 
@@ -144,12 +148,16 @@ class AdminController extends Controller
                     ->addColumn('nama_kost', function ($row) {
                         return $row->nama_kost;
                     })
-                    ->addColumn('lokasi', function ($row) {
-                        return $row->lokasi;
+                    ->addColumn('status', function ($row) {
+                        // return $row->status;
+                        return $row->user_id ? 'Terisi' : 'Belum Terisi';
                     })
-                    ->addColumn('pemilik', function ($row) {
-                        return $row->pemilik;
-                    })
+                    // ->addColumn('lokasi', function ($row) {
+                    //     return $row->lokasi;
+                    // })
+                    // ->addColumn('pemilik', function ($row) {
+                    //     return $row->pemilik;
+                    // })
                     ->addColumn('services', function ($row) {
                         return $row->services;
                     })
@@ -166,6 +174,11 @@ class AdminController extends Controller
                                 <i class="ri-arrow-drop-down-fill" style="font-size: 20px;"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                <li class="detail">
+                                    <a href="' . route('get-payment-admin', ['id' => $row->id]) . '" class="dropdown-item">
+                                        <i class="ri-eye-fill align-bottom me-2 text-muted"></i>Detail
+                                    </a>
+                                </li>
                                 <li class="edit">
                                     <button id="btn-detail" data-id="' . $row->id . '" class="dropdown-item"><i class="ri-edit-2-fill align-bottom me-2 text-muted"></i>Edit</button>
                                 </li>
@@ -188,8 +201,8 @@ class AdminController extends Controller
     {
         try {
             $data = DB::table('kosts')
-            ->select('id', 'nama_kost', 'harga', 'lokasi', 'pemilik', 'kontak_wa', 'kontak_email', 'services', 'deskripsi')
-            ->where('kosts.id', $request->id)
+                ->select('id', 'nama_kost', 'harga', 'lokasi', 'pemilik', 'kontak_wa', 'kontak_email', 'services', 'deskripsi', 'user_id')
+                ->where('kosts.id', $request->id)
                 ->first();
             if ($data) {
                 return response()->json([
@@ -202,6 +215,7 @@ class AdminController extends Controller
                     $data->kontak_wa,
                     $data->kontak_email,
                     $data->deskripsi,
+                    $data->user_id,
                 ]);
             } else {
                 return response()->json(['success' => false, 'message' => 'Terjadi Kesalahan']);
@@ -217,20 +231,20 @@ class AdminController extends Controller
     {
         try {
             $query = DB::table('transaksis')
-            ->join('users', 'transaksis.user_id', '=', 'users.id')
-            ->join('kosts', 'transaksis.kost_id', '=', 'kosts.id')
-            ->select(
-                'transaksis.id as id',
-                'transaksis.foto_transaksi',
-                'transaksis.deskripsi',
-                'transaksis.email',
-                'transaksis.no_wa',
-                'transaksis.status',
-                'users.nama_lengkap',
-                'kosts.nama_kost',
-                'kosts.harga',
-                'kosts.lokasi'
-            );
+                ->join('users', 'transaksis.user_id', '=', 'users.id')
+                ->join('kosts', 'transaksis.kost_id', '=', 'kosts.id')
+                ->select(
+                    'transaksis.id as id',
+                    'transaksis.foto_transaksi',
+                    'transaksis.deskripsi',
+                    'transaksis.email',
+                    'transaksis.no_wa',
+                    'transaksis.status',
+                    'users.nama_lengkap',
+                    'kosts.nama_kost',
+                    'kosts.harga',
+                    'kosts.lokasi'
+                );
             if (Auth::user()->role !== 'admin') {
                 $query->where('transaksis.user_id', Auth::user()->id);
             }
@@ -274,7 +288,7 @@ class AdminController extends Controller
                     ->addColumn('action', function ($row) {
                         $whatsappLink = "https://wa.me/{$row->no_wa}";
                         $gmailLink = "https://mail.google.com/mail/?view=cm&fs=1&to={$row->email}&su=Your%20Subject&body=Your%20Message";
-                        if(Auth::user()->role == 'admin'){
+                        if (Auth::user()->role == 'admin') {
                             return '
                             <div class="dropdown d-inline-block">
                                 <button class="btn btn-soft-secondary btn-sm dropdown ps-2 pe-1 py-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center; font-weight: 500; font-size: 14px;">
@@ -294,7 +308,7 @@ class AdminController extends Controller
                                 </ul>
                             </div>';
                         } else {
-                        return '
+                            return '
                             <div class="dropdown d-inline-block">
                                 <button class="btn btn-soft-secondary btn-sm dropdown ps-2 pe-1 py-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center; font-weight: 500; font-size: 14px;">
                                     Action
@@ -321,21 +335,21 @@ class AdminController extends Controller
     public function findDataBookingByID($id)
     {
         $transaksi = DB::table('transaksis')
-        ->join('users', 'transaksis.user_id', '=', 'users.id')
-        ->join('kosts', 'transaksis.kost_id', '=', 'kosts.id')
-        ->select(
-            'transaksis.id as id',
-            'transaksis.deskripsi',
-            'transaksis.foto_transaksi',
-            'transaksis.email',
-            'transaksis.no_wa',
-            'transaksis.status',
-            'users.nama_lengkap as user_nama',
-            'kosts.nama_kost',
-            'kosts.harga',
-            'kosts.lokasi',
-            'kosts.services',
-        )
+            ->join('users', 'transaksis.user_id', '=', 'users.id')
+            ->join('kosts', 'transaksis.kost_id', '=', 'kosts.id')
+            ->select(
+                'transaksis.id as id',
+                'transaksis.deskripsi',
+                'transaksis.foto_transaksi',
+                'transaksis.email',
+                'transaksis.no_wa',
+                'transaksis.status',
+                'users.nama_lengkap as user_nama',
+                'kosts.nama_kost',
+                'kosts.harga',
+                'kosts.lokasi',
+                'kosts.services',
+            )
             ->where('transaksis.id', $id)
             ->first();
 
@@ -353,17 +367,17 @@ class AdminController extends Controller
     }
 
     public function approve($id)
-   {
+    {
         try {
             DB::table('transaksis')
-            ->where('id', $id)
-            ->update(['status' => 'approved']);
+                ->where('id', $id)
+                ->update(['status' => 'approved']);
             return response()->json(['success' => true, 'message' => 'Berhasil mengupdate user']);
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return response()->json(['success' => false, 'message' => 'Terjadi Kesalahan pada sisi server']);
         }
-   }
+    }
 
     public function storeKost(Request $request)
     {
@@ -371,20 +385,20 @@ class AdminController extends Controller
             $validator = Validator::make($request->all(), [
                 'nama_kost' => 'required',
                 'harga' => 'required',
-                'lokasi' => 'required',
-                'pemilik' => 'required',
-                'kontak_wa' => 'required',
-                'kontak_email' => 'required',
+                // 'lokasi' => 'required',
+                // 'pemilik' => 'required',
+                // 'kontak_wa' => 'required',
+                // 'kontak_email' => 'required',
                 'services' => 'required',
                 'deskripsi' => 'required',
             ], [
                 'nama_kost.required' => 'Nama kost harus diisi.',
                 'harga.required' => 'Harga harus diisi.',
-                'lokasi.required' => 'Lokasi harus diisi.',
-                'pemilik.required' => 'Pemilik harus diisi.',
-                'kontak_wa.required' => 'Kontak WA harus diisi.',
+                // 'lokasi.required' => 'Lokasi harus diisi.',
+                // 'pemilik.required' => 'Pemilik harus diisi.',
+                // 'kontak_wa.required' => 'Kontak WA harus diisi.',
                 'services.required' => 'Services harus diisi.',
-                'kontak_email.required' => 'Kontak Email harus diisi.',
+                // 'kontak_email.required' => 'Kontak Email harus diisi.',
                 'deskripsi.required' => 'Deskripsi Email harus diisi.',
             ]);
 
@@ -405,10 +419,10 @@ class AdminController extends Controller
                 [
                     'nama_kost' => $request->nama_kost,
                     'harga' => $request->harga,
-                    'lokasi' => $request->lokasi,
-                    'pemilik' => $request->pemilik,
-                    'kontak_wa' => $request->kontak_wa,
-                    'kontak_email' => $request->kontak_email,
+                    // 'lokasi' => $request->lokasi,
+                    // 'pemilik' => $request->pemilik,
+                    // 'kontak_wa' => $request->kontak_wa,
+                    // 'kontak_email' => $request->kontak_email,
                     'services' => is_array($request->services) ? implode(',', $request->services) : $request->services,
                     'deskripsi' => $request->deskripsi,
                     'foto_kost' => $fotoProfilPath,
@@ -448,7 +462,7 @@ class AdminController extends Controller
             }
 
             DB::table('users')
-            ->where('id', $request->id_detail)
+                ->where('id', $request->id_detail)
                 ->update($updateData);
 
             return response()->json(['success' => true, 'message' => 'Berhasil mengupdate user']);
@@ -458,21 +472,62 @@ class AdminController extends Controller
         }
     }
 
+    // public function updateKost(Request $request)
+    // {
+    //     try {
+    //         $updateData = [
+    //             'nama_kost' => $request->nama_kost_detail,
+    //             'harga' => $request->harga_detail,
+    //             // 'lokasi' => $request->lokasi_detail,
+    //             // 'pemilik' => $request->pemilik_detail,
+    //             // 'kontak_wa' => $request->kontak_wa_detail,
+    //             // 'kontak_email' => $request->kontak_email_detail,
+    //             'services' => is_array($request->services_detail) ? implode(',', $request->services_detail) : $request->services_detail,
+    //             'deskripsi' => $request->deskripsi_detail,
+    //             'updated_at' => Carbon::parse(now())->timezone('Asia/Jakarta'),
+    //         ];
+
+    //         if ($request->hasFile('gambar_detail')) {
+    //             $fotoProfilPath = $request->file('gambar_detail')->store('images', 'public');
+    //             $updateData['foto_kost'] = $fotoProfilPath;
+    //         }
+
+    //         DB::table('kosts')
+    //             ->where('id', $request->id_detail)
+    //             ->update($updateData);
+
+
+    //         return response()->json([
+    //             'error' => false,
+    //             'data' => [],
+    //             'message' => 'Berhasil mengedit data kost'
+    //         ]);
+    //     } catch (Throwable $e) {
+    //         Log::error($e->getMessage());
+
+    //         return response()->json(['success' => false, 'message' => $e]);
+    //     }
+    // }
+
     public function updateKost(Request $request)
     {
         try {
             $updateData = [
-                    'nama_kost' => $request->nama_kost_detail,
-                    'harga' => $request->harga_detail,
-                    'lokasi' => $request->lokasi_detail,
-                    'pemilik' => $request->pemilik_detail,
-                    'kontak_wa' => $request->kontak_wa_detail,
-                    'kontak_email' => $request->kontak_email_detail,
-                    'services' => is_array($request->services_detail) ? implode(',', $request->services_detail) : $request->services_detail,
-                    'deskripsi' => $request->deskripsi_detail,
-                    'updated_at' => Carbon::parse(now())->timezone('Asia/Jakarta'),
+                'nama_kost' => $request->nama_kost_detail,
+                'harga' => $request->harga_detail,
+                'services' => is_array($request->services_detail) ? implode(',', $request->services_detail) : $request->services_detail,
+                'deskripsi' => $request->deskripsi_detail,
+                'updated_at' => Carbon::parse(now())->timezone('Asia/Jakarta'),
             ];
 
+            // Cek apakah user_id adalah "hapus", jika iya set ke NULL
+            if ($request->user_id === "hapus") {
+                $updateData['user_id'] = null;
+            } elseif (!empty($request->user_id)) {
+                $updateData['user_id'] = $request->user_id;
+            }
+
+            // Cek apakah ada file gambar yang diupload
             if ($request->hasFile('gambar_detail')) {
                 $fotoProfilPath = $request->file('gambar_detail')->store('images', 'public');
                 $updateData['foto_kost'] = $fotoProfilPath;
@@ -481,7 +536,6 @@ class AdminController extends Controller
             DB::table('kosts')
                 ->where('id', $request->id_detail)
                 ->update($updateData);
-
 
             return response()->json([
                 'error' => false,
@@ -494,6 +548,7 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'message' => $e]);
         }
     }
+
 
     public function deleteUser($id)
     {
